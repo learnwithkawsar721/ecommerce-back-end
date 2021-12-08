@@ -2,8 +2,7 @@ const User = require("../models/auth.models");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 // Signup Controller
-exports.signup = (req, res) => {
-  
+exports.signin = (req, res) => {
   User.findOne({ email: req.body.email }).exec((_, user) => {
     if (user) {
       return res.status(400).json({
@@ -34,15 +33,19 @@ exports.signup = (req, res) => {
     }
   });
 };
-// Signin Controller
-exports.signin = (req, res) => {
+// signup Controller
+exports.signup = (req, res) => {
   User.findOne({ email: req.body.email }).exec((error, user) => {
     if (error) return res.status(400).json(error);
     if (user) {
       if (bcrypt.compareSync(req.body.password, user.hash_password)) {
-        const token = jwt.sign({ _id: user._id }, process.env.JWT_TOKEN, {
-          expiresIn: 60 * 60,
-        });
+        const token = jwt.sign(
+          { _id: user._id, role: user.role },
+          process.env.JWT_TOKEN,
+          {
+            expiresIn: 60 * 60,
+          },
+        );
 
         res.status(200).json({ token, user });
       } else {
@@ -52,21 +55,4 @@ exports.signin = (req, res) => {
       res.status(400).json({ error: "Something went wrong" });
     }
   });
-};
-
-// verify token
-exports.verifyToken = (req, res, next) => {
-  const token = req.headers.authorization.split(" ");
-  if (token[0] === "Bearer") {
-    jwt.verify(token[1], process.env.JWT_TOKEN, (error, decoded) => {
-      if (error) {
-        res.status(400).json({ error: error.name });
-      } else {
-        req.user = decoded;
-      }
-    });
-  } else {
-    res.status(400).json({ error: "Invalid Token" });
-  }
-  next();
 };

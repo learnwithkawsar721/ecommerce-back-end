@@ -1,15 +1,12 @@
 const express = require("express");
-const {
-  signup,
-  signin,
-  verifyToken,
-} = require("../controllers/auth.controller");
+const { signup, signin } = require("../controllers/auth.controller");
 const {
   signUp_Val,
   isSignUp_val,
   isSignIn_val,
   signIn_val,
 } = require("../form-validation/auth.validation");
+const { verifyToken } = require("../middleware/common-middleware");
 
 const router = express.Router();
 

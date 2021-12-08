@@ -10,6 +10,7 @@ app.use(express.json());
 // Routes
 const authRoutes = require("./routes/auth.routes.js");
 const adminRoute = require("./routes/admin/auth.routes");
+const CategoryRoute = require("./routes/admin/Category/category.route");
 
 // database
 
@@ -25,6 +26,7 @@ mongoose
 // meddilware
 app.use("/api", authRoutes);
 app.use("/api/admin", adminRoute);
+app.use("/api/admin/category", CategoryRoute);
 
 // express listen
 app.listen(process.env.PORT, () => {
