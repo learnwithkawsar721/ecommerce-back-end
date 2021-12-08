@@ -9,6 +9,7 @@ app.use(express.json());
 
 // Routes
 const authRoutes = require("./routes/auth.routes.js");
+const adminRoute = require("./routes/admin/auth.routes");
 
 // database
 
@@ -23,6 +24,7 @@ mongoose
   .then(() => console.log("Database Connect"));
 // meddilware
 app.use("/api", authRoutes);
+app.use("/api/admin", adminRoute);
 
 // express listen
 app.listen(process.env.PORT, () => {
