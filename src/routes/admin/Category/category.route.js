@@ -14,6 +14,6 @@ const { adminMiddleWare, verifyToken } = require("../../../middleware/common-mid
 router.get("/",verifyToken, adminMiddleWare, getAllCategory);
 
 // post Category Route
-router.post("/create", category_val, iscategory_val, addCategory);
+router.post("/create",verifyToken,adminMiddleWare, category_val, iscategory_val, addCategory);
 
 module.exports = router;
